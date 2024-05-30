@@ -1,8 +1,4 @@
 To @ explore strange new worlds,
 To seek out new life and new civilizations?
-<<<<<<< HEAD
-
 这是B1分支上进行的修改
-=======
 这是在C4分支上进行的修改
->>>>>>> C4
