@@ -246,38 +246,50 @@ def main():
         print("6. 退出程序")
 
         choice = input("请输入数字进行选择：")
+        # 选择功能1：展示有向图
         if choice == "1":
             graph_generator.showDirectedGraph()
+        # 选择功能2：查询桥接词
         elif choice == "2":
             word1 = input("请输入word1：")
             word2 = input("请输入word2：")
             bridge_words = graph_generator.queryBridgeWords(word1, word2)
+            # 如果桥接词列表不为空，则打印
             if bridge_words is not None:
+                # 桥接词列表大于等于1，则打印
                 if len(bridge_words) >= 1:
                     bridge_words_str = ", ".join(bridge_words)
                     print("{} 与 {} 之间的桥接词为：{}.".format(word1, word2, bridge_words_str))
+                # 桥接词列表为空，则打印没有桥接词提示词
                 else:
                     print("{} 与 {} 之间没有桥接词".format(word1, word2))
+            # 如果word1或word2未在图中，则打印提示词
             else:
                 print("word1 或 word2 未在图中")
+        # 选择功能3：根据桥接词生成新文本
         elif choice == "3":
             input_text = input("请输入一行新文本：")
             output_text = graph_generator.generateNewText(input_text)
             print("生成的新文本: ", output_text)
+        # 选择功能4：计算两个单词之间的最短路径
         elif choice == "4":
             word1 = input("请输入word1：")
             word2 = input("请输入word2：")
+            # 计算最短路径和长度
             shortest_path, path_weight = graph_generator.calcShortestPath(word1, word2)
+            # 如果最短路径和路径长度不为空，则打印提示信息
             if shortest_path and path_weight is not None:
                 shortest_path_str = "->".join(shortest_path)
                 print("{} 与 {} 之间的最短路径为：{}".format(word1, word2, shortest_path_str))
                 print("最短路径的长度为: {}".format(path_weight))
             else:
                 print("两个单词之间没有最短路径。")
+        # 选择功能5：随机游走算法
         elif choice == "5":
             visited_nodes = graph_generator.randomWalk()
             visited_nodes_str = " ".join(visited_nodes)
             print("随机游走经过的节点生成的文本: {}".format(visited_nodes_str))
+        # 选择功能6：退出程序
         elif choice == "6":
             break
         else:
