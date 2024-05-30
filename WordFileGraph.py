@@ -274,12 +274,12 @@ def main():
                 print("最短路径的长度为: {}".format(path_weight))
             else:
                 print("两个单词之间没有最短路径。")
-        # elif choice == "5":
-        #     visited_nodes = graph_generator.randomWalk()
-        #     visited_nodes_str = " ".join(visited_nodes)
-        #     print("随机游走经过的节点生成的文本: {}".format(visited_nodes_str))
-        # elif choice == "6":
-        #     break
+        elif choice == "5":
+            visited_nodes = graph_generator.randomWalk()
+            visited_nodes_str = " ".join(visited_nodes)
+            print("随机游走经过的节点生成的文本: {}".format(visited_nodes_str))
+        elif choice == "6":
+            break
         else:
             print("无效选择。请重新输入。")
 
