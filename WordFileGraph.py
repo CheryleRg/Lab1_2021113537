@@ -60,6 +60,8 @@ class WordFileGraph:
         pos = nx.kamada_kawai_layout(self.graph)
         # 获取边的权重标签
         labels = nx.get_edge_attributes(self.graph, 'weight')
+        # 设置图表大小和分辨率
+        plt.figure(figsize=(10, 10), dpi=80)
         # 绘制节点和边
         nx.draw(self.graph, pos, with_labels=True, node_size=1000, node_color='skyblue', edge_color='gray')
         # 在边上绘制权重标签
@@ -192,6 +194,8 @@ class WordFileGraph:
             edge_colors = [local_graph[u][v]['highlight'] if 'highlight' in local_graph[u][v] else 'gray' for u, v in
                            local_graph.edges()]
             labels = nx.get_edge_attributes(local_graph, 'weight')
+            # 设置图表大小和分辨率
+            plt.figure(figsize=(10, 10), dpi=80)
             nx.draw(local_graph, pos, with_labels=True, node_size=1000, node_color='skyblue', edge_color=edge_colors)
             nx.draw_networkx_edge_labels(local_graph, pos, edge_labels=labels, font_color='red')
             plt.show()
