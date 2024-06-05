@@ -1,13 +1,18 @@
 # 作   者：林枭熠
 # 开发时间:2024/5/17 下午4:07
 import copy
-import re
 import random
-import networkx as nx
+import re
+
 import matplotlib.pyplot as plt
+import networkx as nx
 
 
 class WordFileGraph:
+    """
+    WordFileGraph类，用于处理文本文件中的单词关系并创建有向图
+    """
+
     def __init__(self, file_path):
         """
         功能需求1：初始化WordFileGraph类，先解析文本文件，然后创建有向图
@@ -24,7 +29,7 @@ class WordFileGraph:
         解析文本文件，提取单词并存储在self.words中
         """
         # 以只读方式打开文件
-        with open(self.file_path, 'r') as file:
+        with open(self.file_path, 'r', encoding='utf-8') as file:
             # 读取文件内容并去除换行符和回车符
             text = file.read().replace('\n', ' ').replace('\r', ' ')
             # 使用正则表达式找到文本中的单词并存储在self.words中
@@ -63,7 +68,8 @@ class WordFileGraph:
         # 设置图表大小和分辨率
         plt.figure(figsize=(10, 10), dpi=80)
         # 绘制节点和边
-        nx.draw(self.graph, pos, with_labels=True, node_size=1000, node_color='skyblue', edge_color='gray')
+        nx.draw(self.graph, pos, with_labels=True, node_size=1000,
+                node_color='skyblue', edge_color='gray')
         # 在边上绘制权重标签
         nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=labels, font_color='red')
         # 保存图表为base_graph.png
@@ -85,7 +91,8 @@ class WordFileGraph:
         # 遍历图中的所有节点，找到word1和word2之间存在的桥接词
         for node in self.graph.nodes:
             if node != word1.lower() and node != word2.lower():
-                if self.graph.has_edge(word1.lower(), node) and self.graph.has_edge(node, word2.lower()):
+                if (self.graph.has_edge(word1.lower(), node)
+                        and self.graph.has_edge(node, word2.lower())):
                     bridge_words.append(node)
         return bridge_words
 
@@ -182,7 +189,8 @@ class WordFileGraph:
         # 如果word1与word2之间可达，则计算最短路径并展示在图中
         try:
             # 计算最短路径和长度
-            shortest_path, path_weight = self.custom_shortest_path(self.graph, word1.lower(), word2.lower())
+            shortest_path, path_weight = self.custom_shortest_path(
+                self.graph, word1.lower(), word2.lower())
             local_graph = copy.deepcopy(self.graph)
             # 标记最短路径的边
             for i in range(len(shortest_path) - 1):
@@ -191,12 +199,14 @@ class WordFileGraph:
                 local_graph[current_word][next_word]['highlight'] = 'red'
             # 展示图表
             pos = nx.kamada_kawai_layout(local_graph)
-            edge_colors = [local_graph[u][v]['highlight'] if 'highlight' in local_graph[u][v] else 'gray' for u, v in
-                           local_graph.edges()]
+            edge_colors = [local_graph[u][v]['highlight']
+                           if 'highlight' in local_graph[u][v] else 'gray'
+                           for u, v in local_graph.edges()]
             labels = nx.get_edge_attributes(local_graph, 'weight')
             # 设置图表大小和分辨率
             plt.figure(figsize=(10, 10), dpi=80)
-            nx.draw(local_graph, pos, with_labels=True, node_size=1000, node_color='skyblue', edge_color=edge_colors)
+            nx.draw(local_graph, pos, with_labels=True, node_size=1000,
+                    node_color='skyblue', edge_color=edge_colors)
             nx.draw_networkx_edge_labels(local_graph, pos, edge_labels=labels, font_color='red')
             plt.show()
             return shortest_path, path_weight
@@ -237,6 +247,10 @@ class WordFileGraph:
 
 
 def main():
+    """
+    程序主函数，用户交互
+    :return: 无
+    """
     file_path = input("请输入文本文件的路径和文件名：")
     graph_generator = WordFileGraph(file_path)
 
@@ -263,10 +277,10 @@ def main():
                 # 桥接词列表大于等于1，则打印
                 if len(bridge_words) >= 1:
                     bridge_words_str = ", ".join(bridge_words)
-                    print("{} 与 {} 之间的桥接词为：{}.".format(word1, word2, bridge_words_str))
+                    print(f" {word1} 与 {word2} 之间的桥接词为：{bridge_words_str}.")
                 # 桥接词列表为空，则打印没有桥接词提示词
                 else:
-                    print("{} 与 {} 之间没有桥接词".format(word1, word2))
+                    print(f" {word1} 与 {word2} 之间没有桥接词")
             # 如果word1或word2未在图中，则打印提示词
             else:
                 print("word1 或 word2 未在图中")
@@ -284,15 +298,15 @@ def main():
             # 如果最短路径和路径长度不为空，则打印提示信息
             if shortest_path and path_weight is not None:
                 shortest_path_str = "->".join(shortest_path)
-                print("{} 与 {} 之间的最短路径为：{}".format(word1, word2, shortest_path_str))
-                print("最短路径的长度为: {}".format(path_weight))
+                print(f" {word1} 与 {word2} 之间的最短路径为：{shortest_path_str}")
+                print(f"最短路径的长度为: {path_weight}")
             else:
                 print("两个单词之间没有最短路径。")
         # 选择功能5：随机游走算法
         elif choice == "5":
             visited_nodes = graph_generator.randomWalk()
             visited_nodes_str = " ".join(visited_nodes)
-            print("随机游走经过的节点生成的文本: {}".format(visited_nodes_str))
+            print(f"随机游走经过的节点生成的文本: {visited_nodes_str}")
         # 选择功能6：退出程序
         elif choice == "6":
             break
