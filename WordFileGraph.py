@@ -187,6 +187,11 @@ class WordFileGraph:
         :return: 最短路径列表和路径长度
         """
         # 如果word1与word2之间可达，则计算最短路径并展示在图中
+        if word1.lower() is None or word2.lower() is None:
+            return None, None
+        if word1.lower() not in self.graph.nodes or word2.lower() not in self.graph.nodes:
+            return None, None
+        # 如果word1与word2之间可达，则计算最短路径并展示在图中
         try:
             # 计算最短路径和长度
             shortest_path, path_weight = self.custom_shortest_path(
